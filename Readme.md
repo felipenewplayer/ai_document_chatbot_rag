@@ -16,6 +16,13 @@ Chatbot que responde perguntas sobre documentos PDF usando Retrieval-Augmented G
 - phi3 (LLM)
 
 ## Como rodar
+É recomendado criar um ambiente virtual para instalar as dependências e evitar conflitos com outras versões de pacotes Python.
+
+### Criar virtual environment
+No Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
 
 ### 1 Instalar dependências
 

@@ -3,8 +3,7 @@ from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings, OllamaLLM
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate
-
+from prompt import prompt
 st.title("📄 AI Document Chatbot")
 
 # Embeddings
@@ -26,21 +25,12 @@ llm = OllamaLLM(
 
 # Retriever
 retriever = db.as_retriever(
-    search_kwargs={"k": 3}
+    search_kwargs={"k": 10}
 )
 
 # Função para formatar contexto
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
-
-# Prompt
-prompt = ChatPromptTemplate.from_template("""
-Responda com base apenas no contexto abaixo:
-
-{context}
-
-Pergunta: {question}
-""")
 
 # 🔥 RAG PIPELINE (Runnable)
 rag_chain = (

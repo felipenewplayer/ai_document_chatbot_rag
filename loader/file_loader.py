@@ -5,18 +5,32 @@ from langchain_community.document_loaders import (
     CSVLoader,
     UnstructuredWordDocumentLoader
 )
+from collections import defaultdict
 
-
-def safe_load(loader, source):
+def safe_load(loader):
     docs = []
     try:
         for doc in loader.lazy_load():
-            doc.metadata["source"] = source
+            # pega o caminho real do arquivo
+            doc.metadata["file_name"] = doc.metadata.get("source", "desconhecido")
             docs.append(doc)
     except Exception as e:
-        print(f"Erro ao carregar{source}:{e}")  
+        print(f"Erro ao carregar: {e}")  
     return docs
+def format_docs(docs):
+    grouped = defaultdict(list)
 
+    for doc in docs:
+        file = doc.metadata.get("file_name", "desconhecido")
+        grouped[file].append(doc.page_content)
+
+    output = ""
+
+    for file, contents in grouped.items():
+        output += f"\n📄 Arquivo: {file}\n"
+        output += "\n".join(contents[:2])  # limita contexto
+
+    return output
 def load_all_docs():
     docs = []
     
@@ -47,11 +61,10 @@ def load_all_docs():
         loader_cls=UnstructuredWordDocumentLoader
     )
     
-
-    docs.extend(safe_load(pdf_loader, "pdf"))
-    docs.extend(safe_load(txt_loader, "txt"))
-    docs.extend(safe_load(csv_loader, "csv"))
-    docs.extend(safe_load(docx_loader, "docx"))
+    docs.extend(safe_load(pdf_loader))
+    docs.extend(safe_load(txt_loader))
+    docs.extend(safe_load(csv_loader))
+    docs.extend(safe_load(docx_loader))
 
     return docs
     

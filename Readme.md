@@ -1,6 +1,6 @@
 # AI Document Chatbot (RAG)
 
-Chatbot que responde perguntas sobre documentos PDF usando Retrieval-Augmented Generation.
+Chatbot que responde perguntas sobre documentos usando Retrieval-Augmented Generation.
 
 ## Tecnologias
 
@@ -44,7 +44,6 @@ python ingest.py
 ### 5 Rodar o chatbot
 
 streamlit run app.py
-
 
 ## Arquitetura
 
